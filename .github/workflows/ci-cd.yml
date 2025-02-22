@@ -50,7 +50,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-region: us-east-1
-        role-to-assume: arn:aws:iam::YOUR_ACCOUNT_ID:role/DevSecOpsChallengeRole
+        role-to-assume: arn:aws:iam::367222926996:role/DevSecOpsChallengeRole
         role-session-name: GitHubActions
 
     - name: Deploy to AWS Lambda
