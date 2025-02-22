@@ -58,7 +58,6 @@ jobs:
     - name: Verify AWS Credentials
       run: |
         aws sts get-caller-identity
-        aws iam get-user
 
     - name: Deploy to AWS
       run: serverless deploy
