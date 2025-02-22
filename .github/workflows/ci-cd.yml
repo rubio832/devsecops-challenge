@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -50,7 +53,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::367222926996:role/DevSecOpsChallengeRole
-        aws-region: us-east-1  # or your preferred AWS region
+        aws-region: us-east-1
 
     - name: Verify AWS Credentials
       run: |
@@ -58,11 +61,9 @@ jobs:
         aws iam get-user
 
     - name: Deploy to AWS
-      run: |
-        echo "AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}"
-        echo "AWS_SECRET_ACCESS_KEY is set: ${{ env.AWS_SECRET_ACCESS_KEY != '' }}"
-        echo "AWS_SESSION_TOKEN is set: ${{ env.AWS_SESSION_TOKEN != '' }}"
-        serverless deploy
+      run: serverless deploy
+
+
 
     - name: Send findings to AWS Security Hub
       run: |
