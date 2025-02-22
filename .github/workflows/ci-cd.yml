@@ -29,15 +29,19 @@ jobs:
       run: |
         pip install bandit
         bandit -r . -f custom --msg-template "{abspath}:{line}: {severity}: {test_id}: {msg}" --exclude ./node_modules
-    
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
     - name: Run SCA with OWASP Dependency-Check
       uses: dependency-check/Dependency-Check_Action@main
-      env:
-        JAVA_HOME: ${{ runner.tool_cache }}/jdk11/x64/latest
       with:
         project: 'My Project'
         path: '.'
         format: 'HTML'
+    
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
