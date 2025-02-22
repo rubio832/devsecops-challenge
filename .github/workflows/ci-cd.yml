@@ -46,15 +46,23 @@ jobs:
         name: dependency-check-report
         path: ./reports
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-region: us-east-1
         role-to-assume: arn:aws:iam::367222926996:role/DevSecOpsChallengeRole
-        role-session-name: GitHubActions
+        aws-region: us-east-1  # or your preferred AWS region
 
-    - name: Deploy to AWS Lambda
-      run: serverless deploy
+    - name: Verify AWS Credentials
+      run: |
+        aws sts get-caller-identity
+        aws iam get-user
+
+    - name: Deploy to AWS
+      run: |
+        echo "AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}"
+        echo "AWS_SECRET_ACCESS_KEY is set: ${{ env.AWS_SECRET_ACCESS_KEY != '' }}"
+        echo "AWS_SESSION_TOKEN is set: ${{ env.AWS_SESSION_TOKEN != '' }}"
+        serverless deploy
 
     - name: Send findings to AWS Security Hub
       run: |
